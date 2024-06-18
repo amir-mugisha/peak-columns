@@ -52,55 +52,47 @@ public class Main {
             }
         }
 
-        int[] peakRowIndices = new int[columns];
-        int[] peakColIndices = new int[rows];
+        // Find peak-columns
+        boolean foundPeakColumn = false;
 
         // Find maximum in each row
+        int[] maxInRow = new int[rows];
         for (int i = 0; i < rows; i++) {
-            int maxInRow = matrix[i][0];
-            int colIndex = 0;
-
+            int max = matrix[i][0];
             for (int j = 1; j < columns; j++) {
-                if (matrix[i][j] > maxInRow) {
-                    maxInRow = matrix[i][j];
-                    colIndex = j;
+                if (matrix[i][j] > max) {
+                    max = matrix[i][j];
                 }
             }
-
-            peakRowIndices[colIndex] = i;
+            maxInRow[i] = max;
         }
 
         // Find minimum in each column
+        int[] minInCol = new int[columns];
         for (int j = 0; j < columns; j++) {
-            int minInCol = matrix[0][j];
-            int rowIndex = 0;
-
+            int min = matrix[0][j];
             for (int i = 1; i < rows; i++) {
-                if (matrix[i][j] < minInCol) {
-                    minInCol = matrix[i][j];
-                    rowIndex = i;
+                if (matrix[i][j] < min) {
+                    min = matrix[i][j];
                 }
             }
-
-            peakColIndices[rowIndex] = j;
+            minInCol[j] = min;
         }
 
         // Check for peak-columns
-        boolean foundPeakColumn = false;
-        for (int j = 0; j < columns; j++) {
-            int rowIndex = peakRowIndices[j];
-            if (peakColIndices[rowIndex] == j) {
-                int peakValue = matrix[rowIndex][j];
-                System.out.println("Peak-column found at position (" + rowIndex + ", " + j + ") with value " + peakValue);
-                foundPeakColumn = true;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (matrix[i][j] == maxInRow[i] && matrix[i][j] == minInCol[j]) {
+                    System.out.println();
+                    System.out.println("(" + (i + 1) + ", " + (j + 1 )+ ") = " + matrix[i][j]);
+                    foundPeakColumn = true;
+                }
             }
         }
 
         if (!foundPeakColumn) {
             System.out.println("No peak-column found in the matrix.");
         }
-
-
       
     }
 }
